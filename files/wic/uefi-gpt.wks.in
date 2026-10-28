@@ -1,0 +1,10 @@
+# short-description: Create an EFI disk image
+# long-description: Creates a partitioned EFI disk image that the user
+# can directly dd to boot media.
+
+# firmware reserved
+part /boot --source bootimg_efi --sourceparams="loader=${EFI_PROVIDER}" --label boot --active --offset 2M --align 1024 --use-uuid --size 256
+
+part / --source rootfs --fstype=ext4 --label root --align 1024 --use-uuid --size 1800M
+
+bootloader --ptable gpt --timeout=5 --append="rootwait rootfstype=ext4 gpt"
